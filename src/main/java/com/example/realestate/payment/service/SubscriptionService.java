@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
@@ -61,15 +62,19 @@ public class SubscriptionService {
 
     public String updateUserSubscription(SubscriptionRequest subscriptionRequest) {
 
-        var subExist = getSubscriptionByIdUser(subscriptionRequest.userId());
-        if (subExist != null) {
-            Subscription subscription = Subscription.builder()
-                    .namePlan(subscriptionRequest.namePlan())
-                    .userId(subscriptionRequest.userId())
-                    .nbrPrediction(subscriptionRequest.nbrPrediction())
-                    .build();
+       // Subscription subExist = getSubscriptionByIdUser(subscriptionRequest.userId());
+        Optional<Subscription> subExist = subscriptionRepository.findSubscriptionByUserId(subscriptionRequest.userId());
 
-            var sub = subscriptionRepository.save(subscription);
+        if (subExist != null) {
+//            Subscription subscription = Subscription.builder()
+//                    .namePlan(subscriptionRequest.namePlan())
+//                    .userId(subscriptionRequest.userId())
+//                    .nbrPrediction(subscriptionRequest.nbrPrediction())
+//                    .build();
+            subExist.get().setNamePlan(subscriptionRequest.namePlan());
+            subExist.get().setUserId(subscriptionRequest.userId());
+            subExist.get().setNbrPrediction(subscriptionRequest.nbrPrediction());
+            var sub = subscriptionRepository.save(subExist.get());
             return sub.getId();
         }
 

@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/v1/planSubscription")
 @RequiredArgsConstructor
@@ -30,30 +29,30 @@ public class PaymentController {
     //---------------------------Plans--------------------------------//
 
     @PostMapping("/createPlan")
-    public ResponseEntity<String> createPlan(@RequestBody @Valid PlanRequest planRequest) {
-        return ResponseEntity.ok(planService.createPlan(planRequest));
+    public String createPlan(@RequestBody @Valid PlanRequest planRequest) {
+        return planService.createPlan(planRequest);
     }
 
     @GetMapping("/allplans")
-    public ResponseEntity<List<PlanResponse>> findAll()
+    public List<PlanResponse> findAllPlans()
     {
-        return ResponseEntity.ok(planService.planList());
+        return planService.planList();
     }
 
 
     @GetMapping("/planName/{planName}")
-    public ResponseEntity<PlanResponse> findByName(
+    public PlanResponse findByName(
             @PathVariable("planName") String planName)
     {
-        return ResponseEntity.ok(planService.getPlanByName(planName));
+        return planService.getPlanByName(planName);
     }
 
 
     @GetMapping("/exists/{plan-id}")
-    public ResponseEntity<Boolean> existsById(
+    public Boolean existsById(
             @PathVariable("plan-id") String planId)
     {
-        return ResponseEntity.ok(planService.existsById(planId));
+        return planService.existsById(planId);
     }
 
 
@@ -61,38 +60,38 @@ public class PaymentController {
     //---------------------------Subscriptions--------------------------------//
     
     @PostMapping("/createSubscription")
-    public ResponseEntity<String> createSubscription(@RequestBody @Valid SubscriptionRequest subscriptionRequest) {
-        return ResponseEntity.ok(subscriptionService.createSubscription(subscriptionRequest));
+    public String createSubscription(@RequestBody @Valid SubscriptionRequest subscriptionRequest) {
+        return subscriptionService.createSubscription(subscriptionRequest);
     }
 
 
     @GetMapping("/userSub/{idUser}")
-    public ResponseEntity<SubscriptionResponse> findUserSubscriptionB(
+    public SubscriptionResponse findUserSubscriptionB(
             @PathVariable("idUser") String idUser)
     {
-        return ResponseEntity.ok(subscriptionService.getSubscriptionByIdUser(idUser));
+        return subscriptionService.getSubscriptionByIdUser(idUser);
     }
 
 
-    @PutMapping
-    public ResponseEntity<String> updateUserSubscriptionB(
+    @PutMapping("/updateSubscription")
+    public String updateUserSubscriptionB(
             @RequestBody @Valid SubscriptionRequest subscriptionRequest)
     {
-        return ResponseEntity.ok(subscriptionService.updateUserSubscription(subscriptionRequest));
+        return subscriptionService.updateUserSubscription(subscriptionRequest);
     }
 
+
     @GetMapping("/allSubscriptions")
-    public ResponseEntity<List<SubscriptionResponse>> findAllSubscriptions()
+    public List<SubscriptionResponse> findAllSubscriptions()
     {
-        return ResponseEntity.ok(subscriptionService.SubscriptionList());
+        return subscriptionService.SubscriptionList();
     }
 
     @DeleteMapping("/subscription/{user-id}")
-    public ResponseEntity<Void> deleteByIdUser(
+    public void deleteByIdUser(
             @PathVariable("user-id") String userId)
     {
         subscriptionService.deleteUserSubscription(userId);
-        return ResponseEntity.accepted().build();
     }
 
 }
