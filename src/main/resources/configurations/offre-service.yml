@@ -1,0 +1,16 @@
+server:
+  port: 8050
+spring:
+  data:
+    mongodb:
+      username: timaslilaila
+      password: 7RiZRnQZYmJOKt7u
+      host: localhost
+      port: 27018
+      database: offre
+      authentication-database: admin
+
+application:
+  config:
+    users-url: http://localhost:8222/api/v1/users
+    payments-url: http://localhost:8222/api/v1/payments
