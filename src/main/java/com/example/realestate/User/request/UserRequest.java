@@ -1,16 +1,19 @@
 package com.example.realestate.User.request;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record UserRequest(
          String id,
+         @NotBlank(message = "Username is required")
          String username,
-         @NotNull(message = "User firstname required")
+         @NotBlank(message = "First name is required")
          String firstName,
-         @NotNull(message = "User lastname required")
+         @NotBlank(message = "Last name is required")
          String lastName,
-         @Email(message = "User email is not valid email address")
+         @Email(message = "Invalid email format")
+         @NotBlank(message = "Email is required")
          String email,
          String password,
          String phone
