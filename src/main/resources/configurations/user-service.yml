@@ -15,7 +15,3 @@ application:
     offres-url: http://localhost:8222/api/v1/offres
     payments-url: http://localhost:8222/api/v1/payments
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
