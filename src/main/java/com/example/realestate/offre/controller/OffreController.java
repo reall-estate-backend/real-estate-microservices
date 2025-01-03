@@ -1,24 +1,23 @@
 package com.example.realestate.offre.controller;
 
-import com.example.realestate.offre.entity.Immobilier;
-import com.example.realestate.offre.entity.Offre;
 import com.example.realestate.offre.request.OffreRequest;
 import com.example.realestate.offre.response.OffreResponse;
 import com.example.realestate.offre.service.OffreService;
 import com.example.realestate.prediction.PredictionClient;
 import com.example.realestate.prediction.PredictionRequest;
 import com.example.realestate.prediction.PredictionResponse;
+import feign.FeignException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
-
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/v1/offres")
 @RequiredArgsConstructor
@@ -37,64 +36,63 @@ public class OffreController {
     }
 
 
-    @PostMapping
-    public ResponseEntity<String> createOfferWithImmobilier(@RequestBody @Valid OffreRequest request) {
+    @PostMapping("/addOffre")
+    public String createOfferWithImmobilier(@RequestBody @Valid OffreRequest request) {
         if (request == null || request.immobilierRequest() == null) {
             throw new RuntimeException("Offre or Immobilier data is missing in the request body");
         }
-        return ResponseEntity.ok(offreService.createOfferWithImmobilier(request));
+        return offreService.createOfferWithImmobilier(request);
     }
 
-    @PutMapping("/{offreId}")
-    public ResponseEntity<String> updateOfferWithImmobilier(@RequestBody OffreRequest request, @PathVariable String offreId) {
-        return ResponseEntity.ok(offreService.updateOfferWithImmobilier(request, offreId));
-    }
-
-
-    @DeleteMapping("/{offreId}")
-    public ResponseEntity<String> deleteOfferWithImmobilier(@PathVariable String offreId) {
-        try {
-            offreService.deleteOfferWithImmobilier(String.valueOf(offreId));
-            return new ResponseEntity<>("Offer and its associated immobilier deleted successfully", HttpStatus.NO_CONTENT);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    @PutMapping("/updateOffre/{offreId}")
+    public String updateOfferWithImmobilier(@RequestBody OffreRequest request, @PathVariable String offreId) {
+        return offreService.updateOfferWithImmobilier(request, offreId);
     }
 
 
-    @GetMapping("/{offerId}")
-    public ResponseEntity<OffreResponse> getOfferWithImmobilier(@PathVariable String offerId) {
-        return ResponseEntity.ok(offreService.getOfferWithImmobilier(offerId));
+    @DeleteMapping("/deleteOffre/{offreId}")
+    public void deleteOfferWithImmobilier(@PathVariable String offreId) {
+        offreService.deleteOfferWithImmobilier(String.valueOf(offreId));
     }
 
+
+    @GetMapping("/getOffre/{offerId}")
+    public OffreResponse getOfferWithImmobilier(@PathVariable String offerId) {
+        return offreService.getOfferWithImmobilier(offerId);
+    }
 
 
     @GetMapping("/allOffers")
-    public ResponseEntity<List<OffreResponse>> getAllOffers() {
-        return ResponseEntity.ok(offreService.getAllOffers());
+    public List<OffreResponse> getAllOffers() {
+        return offreService.getAllOffers();
     }
 
 
 
-    @PostMapping("/PredictHousePrice")
-    ResponseEntity<PredictionResponse> predictHousePrice(@RequestBody PredictionRequest request){
-        return ResponseEntity.ok(predictionClient.predictHousePrice(request).getBody());
+    @PostMapping("/predictHousePrice")
+    public PredictionResponse predictHousePrice(@RequestBody PredictionRequest request){
+        return predictionClient.predictHousePrice(request).getBody();
     }
+
 
     //get offers by user id
     @GetMapping("/allOffers/{userId}")
-    public ResponseEntity<List<OffreResponse>> getOffresByUserId(@PathVariable("userId") String userId) {
-        return ResponseEntity.ok(offreService.findOffersByUserId(userId));
+    public List<OffreResponse> getOffresByUserId(@PathVariable("userId") String userId) {
+        try {
+            List<OffreResponse> offres = offreService.findOffersByUserId(userId);
+            if (offres == null || offres.isEmpty()) {
+                return new ArrayList<>();
+            }
+            return offres;
+        } catch (FeignException e) {
+            return new ArrayList<>();
+        }
     }
 
 
     @GetMapping("/search")
-    public ResponseEntity<List<OffreResponse>> searchOffresByCity(@RequestParam String city) {
-        List<OffreResponse> offres = offreService.searchByCity(city);
-        if (offres.isEmpty()) {
-            return ResponseEntity.noContent().build(); 
-        }
-        return ResponseEntity.ok(offres);
+    public List<OffreResponse> searchOffresByCity(@RequestParam String city) {
+        return offreService.searchByCity(city);
 
     }
 

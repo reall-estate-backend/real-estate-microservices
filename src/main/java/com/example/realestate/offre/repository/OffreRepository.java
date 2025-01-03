@@ -14,7 +14,9 @@ import java.util.List;
 
 @Repository
 public interface OffreRepository extends MongoRepository<Offre, String> {
+    //here username is like userId
     List<Offre> findOffreByUserId(String userId);
+
 
     // Vous ne pouvez pas directement accéder à immobilier.city, mais vous pouvez accéder à l'ID de l'immobilier
     List<Offre> findByImmobilier_Id(String immobilierId);

@@ -43,13 +43,6 @@ public class OffreService {
 
     @Transactional(rollbackFor = Exception.class)
     public String createOfferWithImmobilier(OffreRequest offreRequest) {
-
-        var user = this.userClient.findById(offreRequest.userId());
-        if (user == null) {
-            log.error("Utilisateur non trouvé pour l'ID : {}", offreRequest.userId());
-            throw new BusinessException("Utilisateur introuvable pour l'ID fourni.");
-        }
-
         Immobilier immobilier = ImmobilierMapper.toImmobilier(offreRequest.immobilierRequest());
         Immobilier savedImmobilier = immobilierRepository.save(immobilier);
 
@@ -65,39 +58,27 @@ public class OffreService {
     }
 
 
-
-
     @Transactional(rollbackFor = Exception.class)
     public String updateOfferWithImmobilier(OffreRequest offreRequest, String offreId) {
 
         Offre existingOffre = offreRepository.findById(offreId)
                 .orElseThrow(() -> new RuntimeException("Offer not found with id: " + offreId));
 
-        var user = this.userClient.findById(offreRequest.userId());
-        if (user == null) {
-            log.error("Utilisateur non trouvé pour l'ID : {}", offreRequest.userId());
-            throw new BusinessException("Utilisateur introuvable pour l'ID fourni.");
-        }
         if (!existingOffre.getUserId().equals(offreRequest.userId())) {
             throw new RuntimeException("You are not authorized to update this offer.");
         }
         existingOffre.setDateDeUpdate(LocalDate.now());
-        // Update immobilier
         Immobilier updatedImmobilier = ImmobilierMapper.toImmobilier(offreRequest.immobilierRequest());
         if (updatedImmobilier != null) {
-            updatedImmobilier.setId(existingOffre.getImmobilier().getId()); // Preserve original ID
-            immobilierRepository.save(updatedImmobilier); // Save updated immobilier
-            existingOffre.setImmobilier(updatedImmobilier); // Associate updated immobilier
+            updatedImmobilier.setId(existingOffre.getImmobilier().getId());
+            immobilierRepository.save(updatedImmobilier);
+            existingOffre.setImmobilier(updatedImmobilier);
         }
-        // Save updated offer
         Offre savedOffre = offreRepository.save(existingOffre);
-
         return savedOffre.getId();
     }
 
 
-
-    
     public void deleteOfferWithImmobilier(String offreId) {
         Offre offer = offreRepository.findById(offreId)
                 .orElseThrow(() -> new BusinessException("Offer not found with id: " + offreId));
@@ -108,25 +89,39 @@ public class OffreService {
             immobilierRepository.delete(immobilier);
         }
     }
-
-
-    
     public OffreResponse getOfferWithImmobilier(String offerId) {
         Offre offre = offreRepository.findById(offerId)
                 .orElseThrow(() -> new BusinessException("Offer not found with id: " + offerId));
         return OffreMapper.fromOffre(offre);
     }
 
+//    public List<OffreResponse> getAllOffers() {
+//        List<Offre> offreList = offreRepository.findAll();
+//
+//        return offreList.stream()
+//                .map(OffreMapper::fromOffre)
+//                .collect(Collectors.toList());
+//    }
 
-    
+
     public List<OffreResponse> getAllOffers() {
         List<Offre> offreList = offreRepository.findAll();
 
+        if (offreList.isEmpty()) {
+            log.warn("Aucune offre trouvée.");
+        }
+
         return offreList.stream()
-                .map(OffreMapper::fromOffre)
+                .map(offre -> {
+                    if (offre.getImmobilier() == null) {
+                        log.warn("Offre {} sans immobilier associé", offre.getId());
+                    }
+                    return OffreMapper.fromOffre(offre);
+                })
                 .collect(Collectors.toList());
     }
-    //get offers for spécifique user
+
+
     public List<OffreResponse> findOffersByUserId(String userId) {
         List<Offre> offers = offreRepository.findOffreByUserId(userId);
 

@@ -38,8 +38,13 @@ public class ImmobilierMapper {
                 .build();
     }
 
+
     // Method to map Immobilier entity to ImmobilierResponse (optional)
     public static ImmobilierResponse fromImmobilier(Immobilier immobilier) {
+        if (immobilier == null) {
+            return null; // Ou retourner une réponse vide ou un message d'erreur
+        }
+
         return new ImmobilierResponse(
                 immobilier.getId(),
                 immobilier.getTitle(),
@@ -52,15 +57,16 @@ public class ImmobilierMapper {
                 immobilier.getLatitude(),
                 immobilier.getLongitude(),
                 immobilier.getDescription(),
-                immobilier.getType(),                 
-                immobilier.getProperty(),             
-                immobilier.getUtilities(),            
-                immobilier.getPetPolicy(),            
-                immobilier.getIncomePolicy(),         
-                immobilier.getSize(),                 
-                immobilier.getSchoolDistance(),       
-                immobilier.getBusDistance(),          
-                immobilier.getRestaurantDistance()    
+                immobilier.getType(),
+                immobilier.getProperty(),
+                immobilier.getUtilities(),
+                immobilier.getPetPolicy(),
+                immobilier.getIncomePolicy(),
+                immobilier.getSize(),
+                immobilier.getSchoolDistance(),
+                immobilier.getBusDistance(),
+                immobilier.getRestaurantDistance()
         );
     }
+
 }
