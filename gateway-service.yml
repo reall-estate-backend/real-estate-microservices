@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: gateway-service-app
-          image: realestate1234/gateway
+          image: realestate1234/gateway:3
           imagePullPolicy: Always
           ports:
             - containerPort: 8222  # Ensure the application is listening on this port
