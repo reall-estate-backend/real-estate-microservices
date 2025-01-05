@@ -6,7 +6,7 @@ spring:
     name: payment-service  # Name of the Payment Service
   data:
     mongodb:
-      uri: mongodb+srv://timaslilaila:7RIZRnQZYmJ0Kt7u@cluster1.sn5ld.mongodb.net/user?retryWrites=true&w=majority&appName=Cluster1
+      uri: mongodb+srv://timaslilaila:7RiZRnQZYmJOKt7u@cluster0.jwdio.mongodb.net/user?retryWrites=true&w=majority&appName=Cluster0
    #   username: timaslilaila
    #   password: 7RiZRnQZYmJOKt7u
    #   host: mongodb  # Use the MongoDB service name in Kubernetes
