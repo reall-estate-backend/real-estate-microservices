@@ -2,22 +2,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: offer-service-app
+  namespace: webapps  # Ensure the deployment is in the correct namespace
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: offre-service-app
+      app: offer-service-app  # Ensure this matches the label in the template
   template:
     metadata:
       labels:
-        app: offre-service-app
+        app: offer-service-app  # Ensure this matches the selector
     spec:
       containers:
-        - name: offre-service-app
-          image: realestate1234/offre:3
+        - name: offer-service-app
+          image: realestate1234/offre
           imagePullPolicy: Always
           ports:
-            - containerPort: 8050
+            - containerPort: 8050  # Ensure the application is listening on this port
           resources:
             requests:
               memory: "128Mi"
@@ -26,14 +27,16 @@ spec:
               memory: "512Mi"
               cpu: "500m"
 ---
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
-  name: offre-service-svc
+  name: offer-service-svc
+  namespace: webapps  # Ensure the service is in the correct namespace
 spec:
   selector:
-    app: offre-service-app
-  type: ClusterIP
+    app: offer-service-app  # Ensure this matches the label in the deployment
+  type: ClusterIP  # Use LoadBalancer or NodePort if external access is needed
   ports:
     - port: 80
-      targetPort: 8050
+      targetPort: 8050  # Ensure this matches the containerPort in the deployment
+      protocol: TCP
