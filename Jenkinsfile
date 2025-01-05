@@ -23,6 +23,13 @@ pipeline {
                 }
             }
         }
+        stage('Deploy gateway to Kubernetes') {
+            steps {
+                withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: CLUSTER_NAME, contextName:'', credentialsId: 'k8-token', namespace: NAMESPACE, serverUrl: SERVER_URL]]) {
+                    sh "kubectl apply -f gateway-service.yml"
+                }
+            }
+        }
 
         stage('Verify Deployment') {
             steps {
