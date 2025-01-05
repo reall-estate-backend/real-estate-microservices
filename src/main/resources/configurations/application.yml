@@ -1,9 +1,9 @@
 eureka:
   instance:
-    hostname: localhost
+    hostname: 10.100.157.161  # Replace with the actual IP or hostname of your Eureka server
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://10.100.157.161:8761/eureka/ 
 
 spring:
   cloud:
