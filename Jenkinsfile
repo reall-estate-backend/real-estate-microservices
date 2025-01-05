@@ -30,6 +30,13 @@ pipeline {
                 }
             }
         }
+        stage('Deploy offre service to Kubernetes') {
+            steps {
+                withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: CLUSTER_NAME, contextName:'', credentialsId: 'k8-token', namespace: NAMESPACE, serverUrl: SERVER_URL]]) {
+                    sh "kubectl apply -f offre-service.yml"
+                }
+            }
+        }
 
         stage('Verify Deployment') {
             steps {
