@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: offer-service-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: offre-service-app
+  template:
+    metadata:
+      labels:
+        app: offre-service-app
+    spec:
+      containers:
+        - name: offre-service-app
+          image: realestate1234/offre
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8050
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: offre-service-svc
+spec:
+  selector:
+    app: offre-service-app
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 8050
