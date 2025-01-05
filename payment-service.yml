@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: payment-service-app
-          image: realestate1234/payment
+          image: realestate1234/payment:3
           imagePullPolicy: Always
           ports:
             - containerPort: 8070  # Ensure the application is listening on this port
