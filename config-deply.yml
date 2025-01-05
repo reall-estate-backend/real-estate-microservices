@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: config-service-app
-        image: realestate1234/config-server
+        image: realestate1234/config-server:4
         imagePullPolicy: Always
         ports:
         - containerPort: 8888
