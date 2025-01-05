@@ -9,10 +9,10 @@ pipeline {
     }
 
     stages {
-        stage('Deploy to Kubernetes') {
+        stage('Deploy config server to Kubernetes') {
             steps {
                 withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: CLUSTER_NAME, contextName:'', credentialsId: 'k8-token', namespace: NAMESPACE, serverUrl: SERVER_URL]]) {
-                    sh "kubectl apply -f deployment-service.yml"
+                    sh "kubectl apply -f config-deply.yml"
                 }
             }
         }
