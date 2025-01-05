@@ -8,8 +8,8 @@ pipeline {
     environment {
         DOCKER_CREDENTIALS_ID = 'dockerhub-credentials' // Replace with your Docker credentials ID
         IMAGE_NAME = 'realestate1234/offre' // Replace with your Docker Hub repository name
-        KUBECONFIG_CREDENTIALS_ID = 'kube-config' // Kubernetes credentials ID in Jenkins
-        K8S_DEPLOYMENT_FILE = 'offre-service.yml' // Path to your Kubernetes deployment file
+        //KUBECONFIG_CREDENTIALS_ID = 'kube-config' // Kubernetes credentials ID in Jenkins
+        //K8S_DEPLOYMENT_FILE = 'offre-service.yml' // Path to your Kubernetes deployment file
     }
 
     stages {
@@ -45,7 +45,7 @@ pipeline {
             }
         }
 
-        stage('Deploy to Kubernetes') {
+        /*stage('Deploy to Kubernetes') {
             steps {
                 script {
                     withCredentials([file(credentialsId: KUBECONFIG_CREDENTIALS_ID, variable: 'KUBECONFIG')]) {
@@ -53,7 +53,7 @@ pipeline {
                     }
                 }
             }
-        }
+        }*/
     }
 
     post {
