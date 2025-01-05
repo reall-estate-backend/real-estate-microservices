@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: offre-service-app
-          image: realestate1234/offre
+          image: realestate1234/offre:3
           imagePullPolicy: Always
           ports:
             - containerPort: 8050
