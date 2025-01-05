@@ -1,16 +1,18 @@
 spring:
   config:
-    import: optional:configserver:http://localhost:8888
+    import: optional:configserver:http://10.100.171.16:8888  # Config Server URL
   application:
-    name: discovery-service
+    name: discovery-service  # Name of the Eureka Service
 
 server:
-  port: 8761
+  port: 8761  # Port for the Eureka Service
+
 eureka:
   instance:
-    hostname: localhost
+    hostname: eureka-lb  # Use the service name or load balancer hostname
+    ip-address: 10.100.157.161  # IP address of the Eureka service
   client:
-    registerWithEureka: false
-    fetchRegistry: false
+    registerWithEureka: false  # Do not register with itself
+    fetchRegistry: false  # Do not fetch the registry from itself
     serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/  # Eureka server URL
