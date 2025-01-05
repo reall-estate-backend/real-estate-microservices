@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: user-service-app
-          image: realestate1234/user:4
+          image: realestate1234/user:5
           imagePullPolicy: Always
           ports:
             - containerPort: 8090  # Ensure the application is listening on this port
