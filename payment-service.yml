@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: payment-service-app
+  namespace: webapps  # Ensure the deployment is in the correct namespace
 spec:
   replicas: 1
   selector:
@@ -17,7 +18,7 @@ spec:
           image: realestate1234/payment
           imagePullPolicy: Always
           ports:
-            - containerPort: 8070
+            - containerPort: 8070  # Ensure the application is listening on this port
           resources:
             requests:
               memory: "128Mi"
@@ -26,14 +27,16 @@ spec:
               memory: "512Mi"
               cpu: "500m"
 ---
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
   name: payment-service-svc
+  namespace: webapps  # Ensure the service is in the correct namespace
 spec:
   selector:
     app: payment-service-app
-  type: ClusterIP
+  type: ClusterIP  # Use LoadBalancer or NodePort if external access is needed
   ports:
     - port: 80
-      targetPort: 8070
+      targetPort: 8070  # Ensure this matches the containerPort in the deployment
+      protocol: TCP
