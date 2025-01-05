@@ -1,23 +1,26 @@
 server:
-  port: 8222
+  port: 8222  # Port for the Gateway Service
+
 spring:
+  application:
+    name: gateway-service  # Name of the Gateway Service
   cloud:
     gateway:
       discovery:
         locator:
-          enabled: true
+          enabled: true  # Enable service discovery via Eureka
       routes:
         - id: user-service
-          uri: lb:http://USER-SERVICE
+          uri: lb://user-service  # Use Eureka service name for user-service
           predicates:
-            - Path=/api/v1/users/**
+            - Path=/api/v1/users/**  # Route requests starting with /api/v1/users
 
         - id: offre-service
-          uri: lb:http://OFFRE-SERVICE
+          uri: lb://offre-service  # Use Eureka service name for offre-service
           predicates:
-            - Path=/api/v1/offres/**
+            - Path=/api/v1/offres/**  # Route requests starting with /api/v1/offres
 
         - id: payment-service
-          uri: lb:http://PAYMENT-SERVICE
+          uri: lb://payment-service  # Use Eureka service name for payment-service
           predicates:
-            - Path=/api/v1/planSubscription/**
+            - Path=/api/v1/planSubscription/**  # Route requests starting with /api/v1/planSubscription
