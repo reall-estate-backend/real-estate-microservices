@@ -1,22 +1,23 @@
 spring:
   profiles:
-    active: native
+    active: native  # Use native profile for local configuration files
   application:
-    name: config-server
+    name: config-server  # Name of the Config Server
   cloud:
     config:
       server:
         native:
-          search-locations: classpath:/configurations
+          search-locations: classpath:/configurations  # Location of configuration files
 server:
-  port: 8888
+  port: 8888  # Port for the Config Server
 
 eureka:
   instance:
-    prefer-ip-address: true
-    hostname: eureka-0
+    prefer-ip-address: true  # Use IP address instead of hostname for registration
+    hostname: config-service-svc  # Use the service name for Eureka registration
+    ip-address: 10.100.171.16  # IP address of the Config Server service
   client:
-    register-with-eureka: true
-    fetch-registry: true
+    register-with-eureka: true  # Register with Eureka
+    fetch-registry: true  # Fetch the registry from Eureka
     serviceUrl:
-      defaultZone:  http://eureka-0.eureka.default.svc.cluster.local:8761/eureka
+      defaultZone: http://10.100.157.161:8761/eureka/  # Eureka server URL
