@@ -6,12 +6,14 @@ spring:
     name: user-service  # Name of the User Service
   data:
     mongodb:
-      username: timaslilaila
-      password: 7RiZRnQZYmJOKt7u
-      host: mongodb  # Use the MongoDB service name in Kubernetes
-      port: 27017  # Default MongoDB port
-      database: user
-      authentication-database: admin
+      uri: mongodb+srv://timaslilaila:7RIZRnQZYmJ0Kt7u@cluster1.sn5ld.mongodb.net/user?retryWrites=true&w=majority&appName=Cluster1
+   #   username: timaslilaila
+    #  password: 7RiZRnQZYmJOKt7u
+    #  host: mongodb  # Use the MongoDB service name in Kubernetes
+    #  port: 27017  # Default MongoDB port
+    #  database: user
+    #  authentication-database: admin
+    
 
 application:
   config:
