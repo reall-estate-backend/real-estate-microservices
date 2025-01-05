@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: user-service-app
+  namespace: webapps  # Ensure the deployment is in the correct namespace
   labels:
     app: user-service-app
 spec:
@@ -19,7 +20,7 @@ spec:
           image: realestate1234/user
           imagePullPolicy: Always
           ports:
-            - containerPort: 8090
+            - containerPort: 8090  # Ensure the application is listening on this port
           resources:
             requests:
               memory: "128Mi"
@@ -28,14 +29,16 @@ spec:
               memory: "512Mi"
               cpu: "500m"
 ---
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
   name: user-service-svc
+  namespace: webapps  # Ensure the service is in the correct namespace
 spec:
   selector:
     app: user-service-app
-  type: ClusterIP
+  type: ClusterIP  # Use LoadBalancer or NodePort if external access is needed
   ports:
     - port: 80
-      targetPort: 8090
+      targetPort: 8090  # Ensure this matches the containerPort in the deployment
+      protocol: TCP
