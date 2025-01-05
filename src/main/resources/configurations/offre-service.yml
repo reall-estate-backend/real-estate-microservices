@@ -1,16 +1,19 @@
 server:
-  port: 8050
+  port: 8050  # Port for the Offre Service
+
 spring:
+  application:
+    name: offre-service  # Name of the Offre Service
   data:
     mongodb:
-      username: timaslilaila
-      password: 7RiZRnQZYmJOKt7u
-      host: localhost
-      port: 27018
-      database: offre
-      authentication-database: admin
+      username: timaslilaila  # MongoDB username
+      password: 7RiZRnQZYmJOKt7u  # MongoDB password
+      host: mongodb  # MongoDB service name in k8s (replace with actual service name)
+      port: 27017  # MongoDB port (default is 27017)
+      database: offre  # MongoDB database name
+      authentication-database: admin  # MongoDB authentication database
 
 application:
   config:
-    users-url: http://localhost:8222/api/v1/users
-    payments-url: http://localhost:8222/api/v1/payments
+    users-url: http://user-service-svc:80/api/v1/users  # User Service URL in k8s
+    payments-url: http://payment-service-svc:80/api/v1/payments  # Payment Service URL in k8s
