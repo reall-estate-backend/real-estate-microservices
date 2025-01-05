@@ -8,7 +8,7 @@ pipeline {
     environment {
         DOCKER_CREDENTIALS_ID = 'dockerhub-credentials' // Replace with your Docker credentials ID
         IMAGE_NAME = 'realestate1234/config-server' // Replace with your Docker Hub repository name
-        KUBECONFIG_CREDENTIALS_ID = 'k8s-token' // Kubernetes credentials ID in Jenkins
+        KUBECONFIG_CREDENTIALS_ID = 'k8-token' // Kubernetes credentials ID in Jenkins
         K8S_DEPLOYMENT_FILE = 'config-deply.yml' // Path to your Kubernetes deployment file
     }
 
